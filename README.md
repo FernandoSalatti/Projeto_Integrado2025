@@ -5,8 +5,6 @@ Este projeto consiste em um **sistema de medição de velocidade do vento** util
 ## Integrantes
 - André Comin
 - Fernando Salatti
-- Krystian Keller
-- Mauro Moura
 
 ---
 
