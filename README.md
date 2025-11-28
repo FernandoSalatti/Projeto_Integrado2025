@@ -33,6 +33,50 @@ Aplicação com interface gráfica feita em **Tkinter** e gráficos em **Matplot
 
 ---
 
+## 🔧 Scripts Adicionais para Testes
+
+Para facilitar o desenvolvimento e validação do fluxo de dados entre **Serial → MQTT → Dashboard**, foram incluídos dois scripts auxiliares em Python.
+
+---
+
+### 3. `simulador_serial.py`
+
+Script utilizado para **simular um dispositivo enviando dados via porta serial**, permitindo testar o dashboard e o fluxo MQTT mesmo sem o Arduino conectado.
+
+Ele:
+
+- Abre uma porta serial configurada manualmente  
+- Envia continuamente um valor fake escolhido aleatoriamente
+- Simula um sensor real enviando dados a cada 1 segundo  
+
+#### Como usar:
+
+1. Ajuste a porta serial no código:
+   ```python
+   porta_simulada = 'dev/cu.usbserial-1420'
+2. Execute
+   ```bash
+   python simulador_serial.py
+   ```
+---
+
+### 4. `listar_portas.py`
+
+Script auxiliar para listar todas as portas seriais disponíveis no sistema.
+
+### Como usar:
+
+1. Execução
+   ```bash
+   python listar_portas.py
+   ```
+2. Exemplo de saída
+   ```arduino
+      Portas seriais disponíveis: - /dev/cu.usbserial-1420 | USB Serial Device
+   ```
+   
+---
+
 ## Requisitos
 
 ### Para o Arduino:
