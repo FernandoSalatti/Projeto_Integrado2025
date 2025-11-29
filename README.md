@@ -20,6 +20,25 @@ Código-fonte para um anemômetro baseado em Arduino, que mede a velocidade do v
 - Exibição no display LCD 16x2  
 - Envio de dados via Serial (para conexão com ESP32/MQTT)  
 
+#### 🧪 Testes do Módulo Arduino (`anemometro.ino`)
+
+Os testes realizados no código do anemômetro foram realizados seguindo uma abordagem baseada no Modelo V.  
+Incluem testes de unidade e de integração do módulo.
+
+| ID | Tipo de Teste | Objetivo | Procedimento | Resultado Esperado |
+|----|---------------|----------|--------------|---------------------|
+| T-ARD-01 | Teste de Unidade | Validar cálculo da velocidade (m/s) | Simular um valor fixo de `intervalo` (ex.: 250000 µs). Forçar o cálculo da velocidade. | Velocidade ≈ 0,94 m/s (com erro aceitável). |
+| T-ARD-02 | Teste de Unidade | Validar cálculo de RPM | Definir `media = 0.942` manualmente e calcular RPM. | RPM ≈ 60. |
+| T-ARD-03 | Teste de Unidade | Verificar buffer circular e média móvel | Preencher mais de 10 valores seguidos (ex.: 15). Observar `indice`, `bufferCheio` e `media`. | `bufferCheio = true` após 10 valores; `media` reflete apenas os últimos 10. |
+| T-ARD-04 | Teste de Unidade | Detectar vento parado | Sem pulsos por >3 s, observar valores adicionados ao buffer. | O buffer recebe valores `0.0`; `media` e `rpm` convergem para 0. |
+| T-ARD-05 | Teste de Unidade | Validar condição `intervalo == 0` | Iniciar o sistema sem gerar pulsos e observar o comportamento. | O cálculo não deve ocorrer; nenhum valor inválido deve ser gerado. |
+| T-ARD-06 | Teste de Robustez | Testar valores muito pequenos de `intervalo` | Forçar `intervalo = 1000 µs` e observar cálculos. | Arduino calcula sem travar; valores são coerentes matematicamente. |
+| T-ARD-07 | Teste de Unidade | Validar alternância de unidade (m/s ↔ km/h) | Pressionar o botão (pino 3) repetidas vezes e observar `mostrarKMH`. | `mostrarKMH` alterna entre true/false a cada pressionamento. |
+| T-ARD-08 | Teste de Integração | Validar escrita no LCD | Forçar valores conhecidos de `rpm` e observar o LCD. | Exibição correta: valor numérico + “RPM”; sem caracteres residuais. |
+| T-ARD-09 | Teste de Integração | Validar leitura real do sensor Hall | Testar com diferentes rotações reais (baixa, média, alta). | `rpm` coerente com velocidade real dentro da precisão esperada. |
+| T-ARD-10 | Teste de Integração | Validar periodicidade da atualização | Monitorar timestamps das leituras via Serial. | Atualizações a cada ~300 ms (+ processamento). |
+
+
 ### 2. `dashboard.py` (Python)
 
 Aplicação com interface gráfica feita em **Tkinter** e gráficos em **Matplotlib**, que:
